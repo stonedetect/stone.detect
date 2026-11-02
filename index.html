@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090817">
+<title>STONE.DETECT | دنیای سنگ‌ها</title>
+<style>
+:root{--bg:#080817;--panel:rgba(20,19,48,.78);--line:rgba(180,164,255,.2);--text:#f5f1ff;--muted:#b9b1d2;--purple:#9b75ff;--cyan:#64dcff}
+*{box-sizing:border-box}
+body{margin:0;color:var(--text);font-family:Tahoma,"Segoe UI",sans-serif;background:#080817;min-height:100vh;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(ellipse at 15% 20%,#39216b 0,transparent 34%),radial-gradient(ellipse at 85% 12%,#123b68 0,transparent 30%),radial-gradient(ellipse at 50% 90%,#251044 0,transparent 38%),linear-gradient(135deg,#070713,#11102b 55%,#080817)}
+body:after{content:"";position:fixed;inset:0;z-index:-1;opacity:.5;pointer-events:none;background-image:radial-gradient(1px 1px at 10% 20%,#fff 99%,transparent),radial-gradient(2px 2px at 70% 35%,#c9c1ff 99%,transparent),radial-gradient(1px 1px at 40% 80%,#fff 99%,transparent),radial-gradient(1px 1px at 88% 75%,#fff 99%,transparent),radial-gradient(1px 1px at 25% 60%,#9ceaff 99%,transparent);background-size:190px 170px,230px 210px,160px 190px,260px 230px,210px 180px}
+button,input{font:inherit}
+button{cursor:pointer}
+header{max-width:1180px;margin:auto;padding:22px 22px 8px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:900;letter-spacing:1.5px;font-size:clamp(18px,3vw,25px)}
+.brand-mark{width:42px;height:42px;border:1px solid #b99bff;border-radius:11px;background:linear-gradient(145deg,#4b2a83,#11152e);display:grid;place-items:center;box-shadow:0 0 22px #8a62ff55}
+.brand-mark svg{width:27px}
+.header-note{font-size:12px;color:var(--muted)}
+main{max-width:1180px;margin:auto;padding:20px 22px 38px}
+.hero{text-align:center;padding:28px 0 22px}
+.hero h1{font-size:clamp(25px,4vw,39px);margin:0 0 10px;text-shadow:0 0 24px #9b75ff66}
+.hero p{color:var(--muted);margin:0 0 22px;font-size:14px}
+.search-wrap{max-width:660px;margin:0 auto;position:relative}
+.search-wrap input{width:100%;border:1px solid #a88aff66;border-radius:999px;padding:17px 52px 17px 22px;background:#111029d9;color:white;outline:none;box-shadow:0 0 28px #8c64ff22}
+.search-wrap input:focus{border-color:#b99bff;box-shadow:0 0 28px #8c64ff55}
+.search-icon{position:absolute;right:19px;top:50%;transform:translateY(-50%);font-size:20px;color:#c9b8ff}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:28px 0 15px;color:var(--muted);font-size:13px}
+.refresh{border:1px solid var(--line);background:#171531;color:#e8ddff;border-radius:999px;padding:9px 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:17px}
+.stone-card{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:linear-gradient(150deg,#201b40d9,#101024eF);box-shadow:0 12px 35px #0005;transition:.25s;cursor:pointer}
+.stone-card:hover{transform:translateY(-5px);border-color:#b59aff;box-shadow:0 15px 35px #8a61ff22}
+.stone-card img{width:100%;height:155px;object-fit:cover;display:block;background:#17152c}
+.stone-card .card-info{padding:13px 14px 15px}
+.stone-card h3{margin:0 0 6px;font-size:16px}
+.stone-card p{margin:0;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.empty,.loading,.error{padding:28px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:16px;grid-column:1/-1}
+.count{text-align:center;margin:26px 0 0;color:#d6caff;font-size:14px}
+footer{text-align:center;padding:22px 15px 28px;border-top:1px solid #ffffff12;color:var(--muted);font-size:12px}
+.socials{display:flex;justify-content:center;gap:18px;margin-bottom:16px}
+.socials a{width:42px;height:42px;display:grid;place-items:center;border:1px solid var(--line);border-radius:13px;background:#18152f;color:#d9caff;transition:.2s}
+.socials a:hover{transform:translateY(-3px);border-color:#b99bff;box-shadow:0 0 18px #9b75ff44}
+.socials svg{width:21px;height:21px;fill:currentColor}
+.credits{line-height:2}
+.credits strong{color:#e9ddff}
+.overlay{position:fixed;inset:0;z-index:20;background:radial-gradient(ellipse at center,#25134bcc,#070713f2 70%);display:grid;place-items:center;padding:20px;transition:opacity .35s,visibility .35s}
+.overlay.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.welcome{width:min(620px,100%);padding:clamp(28px,6vw,54px) 24px;text-align:center;border:1px solid #b99bff55;border-radius:26px;background:linear-gradient(145deg,#211a45ed,#0e1028ed);box-shadow:0 0 70px #8c64ff33}
+.welcome-gem{font-size:55px;filter:drop-shadow(0 0 18px #b99bff)}
+.welcome h2{font-size:clamp(26px,5vw,42px);margin:14px 0 28px}
+.welcome-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.welcome-actions a,.welcome-actions button{border-radius:999px;padding:13px 25px;text-decoration:none;border:1px solid #a98aff88;color:white;background:#8058d7}
+.welcome-actions a{background:#181631}
+.modal{position:fixed;inset:0;z-index:15;background:#050510c9;display:none;place-items:center;padding:18px;backdrop-filter:blur(9px)}
+.modal.open{display:grid}
+.modal-panel{width:min(850px,100%);height:min(690px,90vh);display:flex;flex-direction:column;overflow:hidden;border:1px solid #a98aff66;border-radius:22px;background:linear-gradient(145deg,#1b1938,#0d0d20);box-shadow:0 25px 90px #000b;position:relative}
+.modal-head{flex:none;display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #ffffff17}
+.modal-head h2{margin:0;font-size:20px}
+.close{border:0;background:#ffffff12;color:white;border-radius:10px;width:38px;height:38px;font-size:23px}
+.modal-content{flex:1;min-height:0;display:flex;gap:18px;padding:18px;overflow:hidden}
+.stone-visual{width:43%;flex:none;display:flex;flex-direction:column;gap:12px;transition:width .35s}
+.stone-visual img{width:100%;height:100%;min-height:0;object-fit:contain;border-radius:15px;background:#090918}
+.stone-meta{color:var(--muted);font-size:12px;line-height:1.8}
+.description-side{flex:1;min-width:0;display:flex;flex-direction:column;min-height:0}
+.description-toggle{border:1px solid #9b75ff55;background:#211b42;color:#e9ddff;border-radius:12px;padding:11px 13px;text-align:right;margin-bottom:10px}
+.description-scroll{overflow:auto;overscroll-behavior:contain;white-space:pre-wrap;line-height:2;color:#e8e2f7;padding:5px 10px 12px 4px;flex:1;min-height:0;cursor:pointer}
+.modal-panel.reading .stone-visual{width:145px}
+.modal-panel.reading .stone-visual img{height:145px;flex:none}
+.modal-panel.reading .stone-meta{display:none}
+.modal-panel.reading .description-scroll{border:1px solid #ffffff12;border-radius:12px;background:#09091866;padding:13px}
+@media(max-width:600px){header{padding:16px}.header-note{display:none}main{padding:10px 15px 28px}.hero{padding:24px 0 14px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.stone-card img{height:125px}.stone-card h3{font-size:14px}.modal{padding:9px}.modal-panel{height:92vh}.modal-content{gap:10px;padding:12px}.stone-visual{width:38%}.modal-panel.reading .stone-visual{width:92px}.modal-panel.reading .stone-visual img{height:92px}.modal-head{padding:12px 14px}.modal-head h2{font-size:17px}}
+</style>
+</head>
+<body>
+<div class="overlay" id="welcome">
+  <section class="welcome">
+    <div class="welcome-gem">💎</div>
+    <h2>خوش اومدی به دنیای سنگ من</h2>
+    <div class="welcome-actions">
+      <button id="enterSite">برو به سایت</button>
+      <a id="welcomeInstagram" href="#" target="_blank" rel="noopener">پیج اینستاگرام</a>
+    </div>
+  </section>
+</div>
+
+<header>
+  <div class="brand">
+    <span class="brand-mark"><svg viewBox="0 0 40 40" fill="none"><path d="M20 3 34 14 20 37 6 14 20 3Z" stroke="#d9c7ff" stroke-width="2"/><path d="M6 14h28M13 14l7 23 7-23M13 14l7-11 7 11" stroke="#9deaff" stroke-width="1.5"/></svg></span>
+    <span>STONE.DETECT</span>
+  </div>
+  <div class="header-note">دانشنامه دنیای سنگ‌های قیمتی</div>
+</header>
+
+<main>
+  <section class="hero">
+    <h1>دنیای شگفت‌انگیز سنگ‌ها</h1>
+    <p>سنگ مورد نظرت رو جستجو کن و بیشتر بشناس</p>
+    <div class="search-wrap"><span class="search-icon">⌕</span><input id="search" type="search" placeholder="نام سنگ را بنویسید..." autocomplete="off"></div>
+  </section>
+  <div class="toolbar"><span id="status">در حال دریافت فهرست سنگ‌ها...</span><button class="refresh" id="refresh">↻ بروزرسانی</button></div>
+  <section class="grid" id="stoneGrid"><div class="loading">در حال بارگذاری سنگ‌ها...</div></section>
+  <div class="count" id="count">تعداد کل سنگ‌ها: —</div>
+</main>
+
+<footer>
+  <div class="socials">
+    <a id="telegramLink" href="#" target="_blank" rel="noopener" aria-label="تلگرام"><svg viewBox="0 0 24 24"><path d="M21.7 4.3 18.6 19c-.2 1- .8 1.2-1.6.7l-4.5-3.3-2.2 2.1c-.2.2-.4.4-.8.4l.3-4.6 8.4-7.6c.4-.3-.1-.5-.6-.2L7.2 17.2l-4.4-1.4c-1-.3-1-1 .2-1.5L20.2 7c.9-.3 1.7.2 1.5 1.3Z"/></svg></a>
+    <a id="instagramLink" href="#" target="_blank" rel="noopener" aria-label="اینستاگرام"><svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.5-3a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4Z"/></svg></a>
+  </div>
+  <div class="credits">ساخته شد توسط: <strong>Stone.Detect</strong><br>نسخه سایت v1.0.0</div>
+</footer>
+
+<div class="modal" id="stoneModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <section class="modal-panel" id="modalPanel">
+    <div class="modal-head"><h2 id="modalTitle">نام سنگ</h2><button class="close" id="closeModal" aria-label="بستن">×</button></div>
+    <div class="modal-content">
+      <div class="stone-visual"><img id="modalImage" alt="تصویر سنگ"><div class="stone-meta" id="modalMeta"></div></div>
+      <div class="description-side">
+        <button class="description-toggle" id="descriptionToggle">⌄ نمایش کامل توضیحات (حالت مطالعه)</button>
+        <div class="description-scroll" id="descriptionText" title="برای حالت مطالعه کلیک کنید"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+/* تنظیمات را با اطلاعات مخزن خودت جایگزین کن */
+const CONFIG = {
+  owner: "YOUR_GITHUB_USERNAME",
+  repo: "YOUR_REPOSITORY_NAME",
+  branch: "main",
+  folder: "stones",
+  telegramUrl: "https://t.me/YOUR_CHANNEL",
+  instagramUrl: "https://instagram.com/YOUR_PAGE"
+};
+
+const grid = document.getElementById("stoneGrid");
+const search = document.getElementById("search");
+const statusEl = document.getElementById("status");
+const countEl = document.getElementById("count");
+const modal = document.getElementById("stoneModal");
+const panel = document.getElementById("modalPanel");
+let stones = [];
+
+function setSocialLinks(){
+  document.getElementById("telegramLink").href = CONFIG.telegramUrl;
+  document.getElementById("instagramLink").href = CONFIG.instagramUrl;
+  document.getElementById("welcomeInstagram").href = CONFIG.instagramUrl;
+}
+function safeText(value){return String(value ?? "").trim();}
+function parseTxt(text, fallbackName){
+  const result = {name:fallbackName, description:"", fields:[]};
+  const lines = text.replace(/^\uFEFF/,"").split(/\r?\n/);
+  let inDescription = false;
+  for(const line of lines){
+    const match = line.match(/^\s*([^:：]{2,35})\s*[:：]\s*(.*)$/);
+    if(match){
+      const key = match[1].trim(), value = match[2].trim();
+      if(/^(توضیحات|شرح|معرفی)$/i.test(key)){inDescription=true;if(value) result.description += value+"\n";continue;}
+      if(/^(نام سنگ|نام)$/i.test(key) && value) result.name=value;
+      result.fields.push([key,value]);
+      inDescription=false;
+    }else if(inDescription || line.trim()){
+      result.description += line+"\n";
+    }
+  }
+  result.description = result.description.trim() || text.trim();
+  return result;
+}
+function encodedPath(path){return path.split("/").map(encodeURIComponent).join("/");}
+function isTxt(name){return /\.txt$/i.test(name);}
+function baseName(name){return name.replace(/\.txt$/i,"");}
+function imageFor(files, name){
+  const target=baseName(name).toLocaleLowerCase();
+  return files.find(f => /\.(jpg|jpeg|png|webp)$/i.test(f.name) && baseName(f.name).toLocaleLowerCase()===target);
+}
+async function loadStones(){
+  if(CONFIG.owner.startsWith("YOUR_") || CONFIG.repo.startsWith("YOUR_")){
+    grid.innerHTML='<div class="error">برای اتصال سایت، نام کاربری و نام مخزن GitHub را در بخش CONFIG کد وارد کن.</div>';
+    statusEl.textContent="تنظیم مخزن GitHub انجام نشده است";countEl.textContent="تعداد کل سنگ‌ها: ۰";return;
+  }
+  grid.innerHTML='<div class="loading">در حال بارگذاری سنگ‌ها...</div>';
+  statusEl.textContent="در حال دریافت اطلاعات از GitHub";
+  const api=`https://api.github.com/repos/${encodeURIComponent(CONFIG.owner)}/${encodeURIComponent(CONFIG.repo)}/contents/${encodedPath(CONFIG.folder)}?ref=${encodeURIComponent(CONFIG.branch)}`;
+  try{
+    const response=await fetch(api,{headers:{Accept:"application/vnd.github+json"}});
+    if(!response.ok) throw new Error(response.status===404?"پوشه stones یا مخزن پیدا نشد.":"دریافت فایل‌ها از GitHub ناموفق بود. مخزن باید Public باشد.");
+    const files=await response.json();
+    const txtFiles=files.filter(f=>f.type==="file" && isTxt(f.name));
+    const loaded=await Promise.all(txtFiles.map(async file=>{
+      const txtResponse=await fetch(file.download_url);
+      if(!txtResponse.ok) return null;
+      const raw=await txtResponse.text();
+      const data=parseTxt(raw,baseName(file.name));
+      const imageFile=imageFor(files,file.name);
+      const imageUrl=imageFile?.download_url || "";
+      return {fileName:file.name,name:data.name,description:data.description,fields:data.fields,image:imageUrl,searchText:(data.name+" "+baseName(file.name)+" "+raw).toLocaleLowerCase()};
+    }));
+    stones=loaded.filter(Boolean);
+    renderStones();
+    statusEl.textContent=`${stones.length} سنگ بارگذاری شد`;
+  }catch(error){
+    grid.innerHTML=`<div class="error">${error.message}<br><small>نام مخزن، شاخه و پوشه stones را بررسی کن.</small></div>`;
+    statusEl.textContent="خطا در بارگذاری";
+    countEl.textContent="تعداد کل سنگ‌ها: —";
+  }
+}
+function renderStones(){
+  const query=search.value.trim().toLocaleLowerCase();
+  const filtered=stones.filter(s=>s.searchText.includes(query));
+  grid.innerHTML="";
+  if(!filtered.length){grid.innerHTML='<div class="empty">سنگی با این نام پیدا نشد.</div>';}
+  filtered.forEach(stone=>{
+    const card=document.createElement("article");card.className="stone-card";card.tabIndex=0;
+    const img=document.createElement("img");img.loading="lazy";img.alt=stone.name;
+    img.src=stone.image || "data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><rect width="100%" height="100%" fill="#17152c"/><text x="50%" y="50%" fill="#b9a8e8" text-anchor="middle" font-size="22">STONE.DETECT</text></svg>');
+    const info=document.createElement("div");info.className="card-info";
+    const title=document.createElement("h3");title.textContent=stone.name;
+    const subtitle=document.createElement("p");subtitle.textContent=stone.fields.find(f=>/دسته|گروه|نوع/.test(f[0]))?.[1] || "برای مشاهده اطلاعات کلیک کنید";
+    info.append(title,subtitle);card.append(img,info);
+    card.addEventListener("click",()=>openStone(stone));
+    card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openStone(stone);}});
+    grid.append(card);
+  });
+  countEl.textContent=`تعداد کل سنگ‌ها: ${stones.length}  |  نمایش: ${filtered.length}`;
+}
+function openStone(stone){
+  document.getElementById("modalTitle").textContent=stone.name;
+  const image=document.getElementById("modalImage");
+  image.src=stone.image || "";image.alt=stone.name;
+  document.getElementById("modalMeta").textContent=stone.fields.filter(f=>!/^توضیحات$/i.test(f[0])).map(f=>`${f[0]}: ${f[1]}`).join("\n");
+  document.getElementById("descriptionText").textContent=stone.description || "توضیحاتی برای این سنگ ثبت نشده است.";
+  panel.classList.remove("reading");
+  document.getElementById("descriptionToggle").textContent="⌄ نمایش کامل توضیحات (حالت مطالعه)";
+  modal.classList.add("open");
+}
+function toggleReading(){
+  panel.classList.toggle("reading");
+  const reading=panel.classList.contains("reading");
+  document.getElementById("descriptionToggle").textContent=reading?"⌃ بازگشت به حالت عادی":"⌄ نمایش کامل توضیحات (حالت مطالعه)";
+}
+document.getElementById("descriptionToggle").addEventListener("click",toggleReading);
+document.getElementById("descriptionText").addEventListener("click",toggleReading);
+document.getElementById("closeModal").addEventListener("click",()=>modal.classList.remove("open"));
+modal.addEventListener("click",e=>{if(e.target===modal)modal.classList.remove("open");});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")modal.classList.remove("open");});
+document.getElementById("enterSite").addEventListener("click",()=>document.getElementById("welcome").classList.add("hidden"));
+document.getElementById("refresh").addEventListener("click",loadStones);
+search.addEventListener("input",renderStones);
+setSocialLinks();
+loadStones();
+</script>
+</body>
+</html>
